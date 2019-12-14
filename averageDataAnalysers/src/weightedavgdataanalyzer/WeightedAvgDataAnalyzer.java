@@ -106,9 +106,9 @@ public class WeightedAvgDataAnalyzer {
         // Selecting the number of elements that is relevant for our sake: i.e. removing element 0 and 1 which are
         // 'weight' and 'numberOfElementsToDrop'
         ArrayList<Double> selectedDataForAverageCalculations = new ArrayList<Double>(data.subList(2, data.size()));
-        //System.out.println("My own sorting: " + sortArrayList(selectedDataForAverageCalculations));
+
         //Collections.sort(selectedDataForAverageCalculations);
-        //System.out.println("Collection.sort(): " + selectedDataForAverageCalculations);
+        // Our own sorting method to sort the data in a ArrayList<Double>
         ArrayList<Double> sortedSelectedDataForAverageCalculations = sortArrayList(selectedDataForAverageCalculations);
 
         // Use the "dropped out" elements by jumping "ahead" of in the ArrayList with the number 'numberOfElementsToDrop'
