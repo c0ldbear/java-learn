@@ -14,33 +14,23 @@ public class WeightedAvgDataAnalyzer {
     public static void main(String[] args) throws IOException{
         Scanner in = new Scanner(System.in);
 
-
-
-        boolean done = false;
-        while (!done){
+        while (true){
             try{
                 System.out.print("Please enter the file name: ");
                 String filename = in.next();
-                //System.out.println();
 
                 ArrayList<Double> data = readFile(filename);
+                System.out.println("Data input (from file '" + filename+ "'): " + data);
 
                 // The code below might need to be modified so that it prints the correct text.
                 System.out.println("Weighted average: " + CalculateWeightedAverage(data));
 
-                done = true;
-            }
-
-            catch (FileNotFoundException exception){
+                break;
+            } catch (FileNotFoundException exception) {
                 System.out.println("File not found.");
-                return;
-            }
-
-            catch (NoSuchElementException exception){
+            } catch (NoSuchElementException exception) {
                 System.out.println("File contents invalid.");
-            }
-
-            catch (IOException exception){
+            } catch (IOException exception) {
                 exception.printStackTrace();
             }
         }
@@ -48,6 +38,7 @@ public class WeightedAvgDataAnalyzer {
 
     public static ArrayList<Double> readFile(String filename) throws IOException{
         File inFile = new File(filename);
+
         try(Scanner in = new Scanner(inFile)) {
             return readData(in);
         }
@@ -66,7 +57,10 @@ public class WeightedAvgDataAnalyzer {
                 }
             }
             // No handling if something goes wrong - so we might need add some handling here.
-        } catch (Exception e) {}
+        } catch (Exception e) {
+           System.out.println("ERROR: Something went wrong.");
+           System.out.println("\tError message: " + e.getMessage());
+        }
 
         return data;
     }
@@ -90,6 +84,7 @@ public class WeightedAvgDataAnalyzer {
         ArrayList<Double> selectedDataForAverageCalculations = new ArrayList<Double>(data.subList(2, data.size()));
         Collections.sort(selectedDataForAverageCalculations);
 
+        // Use the "dropped out" elements by jumping "ahead" of in the ArrayList with the number 'numberOfElementsToDrop'
         for (int i = numberOfElementsToDrop; i < selectedDataForAverageCalculations.size(); i++) {
             weightedAverage += selectedDataForAverageCalculations.get(i);
         }
