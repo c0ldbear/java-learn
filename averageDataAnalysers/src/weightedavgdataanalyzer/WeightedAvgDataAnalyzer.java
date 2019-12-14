@@ -75,6 +75,33 @@ public class WeightedAvgDataAnalyzer {
         return data.get(1).intValue();
     }
 
+    private static ArrayList<Double> sortArrayList(ArrayList<Double> data) {
+        ArrayList<Double> sortedData = new ArrayList<>();
+        ArrayList<Double> searchData = new ArrayList<>(data);
+        double minValue = -100000000;
+        double value = 0;
+        int valueIndex = 0;
+
+        // need to find the smallest values in our list, add to new list, and remove from our search list.
+        while (!searchData.isEmpty()) {
+            value = searchData.get(0);
+            valueIndex = 0;
+            for (int i = 0; i < searchData.size(); i++) {
+                if (value > searchData.get(i)) {
+                    value = searchData.get(i);
+                    valueIndex = i;
+                }
+            }
+            System.out.println(value);
+            System.out.println(valueIndex);
+            sortedData.add(value);
+            searchData.remove(valueIndex);
+        }
+
+        System.out.println(sortedData);
+        return sortedData;
+    }
+
     public static double CalculateWeightedAverage(ArrayList<Double> data) {
         double weightedAverage = 0.;
         int numberOfElementsToDrop = getNumberOfElementsToDrop(data);
@@ -82,16 +109,19 @@ public class WeightedAvgDataAnalyzer {
         // Selecting the number of elements that is relevant for our sake: i.e. removing element 0 and 1 which are
         // 'weight' and 'numberOfElementsToDrop'
         ArrayList<Double> selectedDataForAverageCalculations = new ArrayList<Double>(data.subList(2, data.size()));
-        Collections.sort(selectedDataForAverageCalculations);
+        //System.out.println("My own sorting: " + sortArrayList(selectedDataForAverageCalculations));
+        //Collections.sort(selectedDataForAverageCalculations);
+        //System.out.println("Collection.sort(): " + selectedDataForAverageCalculations);
+        ArrayList<Double> sortedSelectedDataForAverageCalculations = sortArrayList(selectedDataForAverageCalculations);
 
         // Use the "dropped out" elements by jumping "ahead" of in the ArrayList with the number 'numberOfElementsToDrop'
-        for (int i = numberOfElementsToDrop; i < selectedDataForAverageCalculations.size(); i++) {
-            weightedAverage += selectedDataForAverageCalculations.get(i);
+        for (int i = numberOfElementsToDrop; i < sortedSelectedDataForAverageCalculations.size(); i++) {
+            weightedAverage += sortedSelectedDataForAverageCalculations.get(i);
         }
 
         // this part here is calculating how many elements that is handled in the for-loop without an extra variable.
         // We could have added a variable 'count' to get how many elements where added to 'weightedAverage'
-        weightedAverage /= (selectedDataForAverageCalculations.size() - numberOfElementsToDrop);
+        weightedAverage /= (sortedSelectedDataForAverageCalculations.size() - numberOfElementsToDrop);
 
         // Lastly, we need to multiply with the weight so we get the weighted average.
         return weightedAverage * getWeight(data);
