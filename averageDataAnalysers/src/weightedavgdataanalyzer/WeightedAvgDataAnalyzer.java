@@ -78,24 +78,21 @@ public class WeightedAvgDataAnalyzer {
     private static ArrayList<Double> sortArrayList(ArrayList<Double> data) {
         ArrayList<Double> sortedData = new ArrayList<>();
         ArrayList<Double> searchData = new ArrayList<>(data);
-        double minValue = -100000000;
-        double value = 0;
-        int valueIndex = 0;
+        
+        double minValue = 0;
+        int minValueIndex = 0;
 
-        // need to find the smallest values in our list, add to new list, and remove from our search list.
         while (!searchData.isEmpty()) {
-            value = searchData.get(0);
-            valueIndex = 0;
+            minValue = searchData.get(0);
+            minValueIndex = 0;
             for (int i = 0; i < searchData.size(); i++) {
-                if (value > searchData.get(i)) {
-                    value = searchData.get(i);
-                    valueIndex = i;
+                if (minValue > searchData.get(i)) {
+                    minValue = searchData.get(i);
+                    minValueIndex = i;
                 }
             }
-            System.out.println(value);
-            System.out.println(valueIndex);
-            sortedData.add(value);
-            searchData.remove(valueIndex);
+            sortedData.add(minValue);
+            searchData.remove(minValueIndex);
         }
 
         System.out.println(sortedData);
